@@ -94,25 +94,25 @@ class Request {
    * @memberof Request
    */
   modifyRequest(req, res) {
-    console.log(request);
+
     for (let i = 0; i < request.length; i++) {
+      console.log(request[i].requestId);
       if (request[i].requestId === parseInt(req.params.requestId, 10)) {
         request[i].title = req.body.title;
         request[i].category = req.body.category;
         request[i].description = req.body.description;
         request[i].urgencyLevel = req.body.urgencyLevel;
-        request[i].date = req.body.date;
         return res.json({
           message: 'Update Successful',
           request: request[i],
           error: false
         });
       }
-      return res.status(404).json({
-        message: 'Request not found',
-        error: true
-      });
     }
+    return res.status(400).json({
+      message: 'Not Successfull!',
+      error: true
+    });
   }
 }
 const requestController = new Request();

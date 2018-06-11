@@ -17,6 +17,7 @@ describe('API Integration Tests', () => {
         .send()
         .end((err, res) => {
           expect(res.status).to.equal(200);
+          res.should.be.json;
           done();
         });
     });
@@ -28,6 +29,7 @@ describe('API Integration Tests', () => {
         .send()
         .end((err, res) => {
           expect(res.status).to.equal(200);
+          res.should.be.json;
           done();
         });
     });
@@ -37,6 +39,7 @@ describe('API Integration Tests', () => {
         .send()
         .end((err, res) => {
           expect(res.status).to.equal(404);
+          res.should.be.json;
           done();
         });
     });
@@ -55,6 +58,7 @@ describe('API Integration Tests', () => {
         })
         .end((err, res) => {
           expect(res.status).to.equal(201);
+          res.should.be.json;
           done();
         });
     });
@@ -78,6 +82,7 @@ describe('API Integration Tests', () => {
         };
         expect(res.status).to.equal(400);
         expect(res.body.should.be.a('object'));
+        res.should.be.json;
         expect(res.body).to.haveOwnProperty('message').to.eql(message);
         done();
       });
@@ -101,6 +106,7 @@ describe('API Integration Tests', () => {
         };
         expect(res.status).to.equal(400);
         expect(res.body.should.be.a('object'));
+        res.should.be.json;
         expect(res.body).to.haveOwnProperty('message').to.eql(message);
         done();
       });
@@ -124,6 +130,7 @@ describe('API Integration Tests', () => {
         };
         expect(res.status).to.equal(400);
         expect(res.body.should.be.a('object'));
+        res.should.be.json;
         expect(res.body).to.haveOwnProperty('message').to.eql(message);
         done();
       });
@@ -147,6 +154,7 @@ describe('API Integration Tests', () => {
         };
         expect(res.status).to.equal(400);
         expect(res.body.should.be.a('object'));
+        res.should.be.json;
         expect(res.body).to.haveOwnProperty('message').to.eql(message);
         done();
       });
@@ -164,18 +172,19 @@ describe('API Integration Tests', () => {
         })
         .end((err, res) => {
           expect(res.status).to.equal(200);
+          res.should.be.json;
           done();
         });
     });
-
-    // it('return 404 if request is not found', (done) => {
-    //     chai.request(app)
-    //       .put('/api/v1/users/requests/6')
-    //       .send()
-    //       .end((err, res) => {
-    //         expect(res.status).to.equal(404);
-    //         done();
-    //       });
-    //   });
+    it('return 400 for unsuccessful update', (done) => {
+      chai.request(app)
+        .put('/api/v1/users/requests/6')
+        .send()
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          res.should.be.json;
+          done();
+        });
+    });
     });
   });
