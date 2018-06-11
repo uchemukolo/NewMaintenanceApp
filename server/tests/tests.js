@@ -168,14 +168,14 @@ describe('API Integration Tests', () => {
         });
     });
 
-    it('return 404 if request is not found', (done) => {
-        chai.request(app)
-          .put('/api/v1/users/requests/6')
-          .send()
-          .end((err, res) => {
-            expect(res.status).to.equal(404);
-            done();
-          });
-      });
+    // it('return 404 if request is not found', (done) => {
+    //     chai.request(app)
+    //       .put('/api/v1/users/requests/6')
+    //       .send()
+    //       .end((err, res) => {
+    //         expect(res.status).to.equal(404);
+    //         done();
+    //       });
+    //   });
     });
   });
