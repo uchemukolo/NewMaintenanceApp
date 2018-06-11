@@ -1,0 +1,53 @@
+{
+  "name": "newmaintenanceapp",
+  "version": "1.0.0",
+  "description": "Maintenance Tracker App is an application that provides users with the ability to reach out to operations or repairs department regarding repair or maintenance requests and monitor the status of their request.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --watch server --exec babel-node server/app.js",
+    "test": "nyc --reporter=html --reporter=text mocha --compilers js:babel-core/register server/tests/tests.js",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uchemukolo/NewMaintenanceApp.git"
+  },
+  "author": "Uche Mukolo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uchemukolo/NewMaintenanceApp/issues"
+  },
+  "homepage": "https://github.com/uchemukolo/NewMaintenanceApp#readme",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "bcrypt": "^2.0.1",
+    "body-parser": "^1.18.3",
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
+    "coveralls": "^3.0.1",
+    "dotenv": "^5.0.1",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.12.0",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.2.1",
+    "mocha": "^5.1.1",
+    "mocha-lcov-reporter": "^1.3.0",
+    "morgan": "^1.9.0",
+    "nyc": "^11.8.0",
+    "path": "^0.12.7",
+    "pg": "^7.4.3",
+    "pg-pool": "^2.0.3",
+    "save": "^2.3.2",
+    "supertest": "^3.1.0",
+    "validatorjs": "^3.14.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.4"
+  }
+}
