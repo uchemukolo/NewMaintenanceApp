@@ -17,7 +17,6 @@ class Request {
    *
    * @param {object} response
    *
-   * @return {object} this - Class instance
    *
    * @memberof Request
    */
@@ -27,7 +26,6 @@ class Request {
       request: requests,
       error: false
     });
-    return this;
   }
   /**
 	 *@description - Get a the request of a logged in user
@@ -54,7 +52,7 @@ class Request {
       message: 'Request not found!',
       error: true
     });
-    return this;
+
   }
   /**
 	 *@description - Create a request
@@ -83,7 +81,7 @@ class Request {
       request: requests,
       error: false
     });
-    return this;
+
   }
   /**
    *@description - Modify details of a request
@@ -92,11 +90,11 @@ class Request {
    *
    * @param {object} res
    *
-   * @return {object} this - Class instance
    *
    * @memberof Request
    */
   modifyRequest(req, res) {
+    console.log(request);
     for (let i = 0; i < request.length; i++) {
       if (request[i].requestId === parseInt(req.params.requestId, 10)) {
         request[i].title = req.body.title;
@@ -114,7 +112,6 @@ class Request {
         message: 'Request not found',
         error: true
       });
-      return this;
     }
   }
 }
