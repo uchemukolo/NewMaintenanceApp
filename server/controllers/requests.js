@@ -1,4 +1,4 @@
-import requests from '../db/request';
+import requests from '../models/dummyData';
 
 const request = requests;
 /**

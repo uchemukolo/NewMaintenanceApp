@@ -1,13 +1,13 @@
 import express from 'express';
 import request from '../controllers/requests';
-import Validate from '../middleware/validate';
+import validate from '../middleware/validate';
 
 const router = express.Router();
 
 router.get('/', request.getAll);
 router.get('/:requestId', request.getOne);
-router.post('/', Validate.createrequest, request.createRequest);
-router.put('/:requestId', Validate.createrequest, request.modifyRequest);
+router.post('/', validate.requestData, request.createRequest);
+router.put('/:requestId', validate.requestData, request.modifyRequest);
 
 
 export default router;
