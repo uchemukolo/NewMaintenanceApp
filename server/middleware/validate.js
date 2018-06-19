@@ -151,13 +151,13 @@ class Validate {
    *
    * @memberof Validate
   */
-  static requestData(req, res, next) {
+  static createRequest(req, res, next) {
     const {
-      title, category, description, urgencyLevel, status
+      title, category, description, urgencyLevel, currentStatus
     } = req.body;
 
     const createData = {
-      title, category, urgencyLevel, description, status
+      title, category, urgencyLevel, description, currentStatus
     };
 
     const createDataRules = {
