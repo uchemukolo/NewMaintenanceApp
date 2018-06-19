@@ -45,7 +45,7 @@ CREATE TABLE requests(
   category category_type,
   UrgencyLevel urgency_level_type,
   description TEXT not null,
-  status status_type,
+  currentStatus status_type default 'Pending',
   created_at timestamp (0) without time zone default now(),
   FOREIGN KEY (userId) REFERENCES users(id)
    )`;
@@ -55,17 +55,14 @@ CREATE TABLE requests(
 
 pool.query(users).then((res, err) => {
   console.log(res, err);
-  error: err.message
 });
 
 pool.query(seedUsers).then((res, err) => {
   console.log(res, err);
-  error: err.message
 });
 
 pool.query(requests).then((res, err) => {
   console.log(res, err);
-  error: err.message
 });
 
 // pool.query(seedRequests).then((res, err) => {
