@@ -1,5 +1,3 @@
-import jwt from 'jsonwebtoken';
-// import requests from '../models/dummyData';
 import db from '../models/index';
 
 /**
@@ -12,8 +10,6 @@ import db from '../models/index';
  */
 class Request {
 /**
-  *@static - Create a new request
-   *
    *@param {object} req - request object
    *
    * @param {object} res - responce object
@@ -22,18 +18,17 @@ class Request {
    *
    * @memberof Request
    */
-  createRequest(req, res) {
+  static createRequest(req, res) {
     const {
       title, category, description, urgencyLevel
     } = req.body;
-    const decoded = jwt.verify(req.headers.token);
     const findOne = {
       text: 'SELECT * FROM requests WHERE title = $1 AND userId = $2',
       values: [title, req.decode.id],
     };
     const create = {
       text: 'INSERT INTO requests(title, category, description, urgencyLevel, userId) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      values: [title, category, description, urgencyLevel, req.decode.id],
+      values: [title, category, description, urgencyLevel, req.decode.id]
     };
 
     db.query(findOne)
@@ -45,32 +40,31 @@ class Request {
         }
         db.query(create)
           .then((responce) => {
-            const newRequest = {
-              id: responce.rows[0].id,
-              userId: req.decode.id,
-              status: responce.rows[0].currentStatus,
-              title,
-              category,
-              description,
-              urgencyLevel
-            };
             res.status(201).json({
               message: 'Request Created Successfully',
-              request: newRequest,
+              newRequest: {
+                id: responce.rows[0].id,
+                userId: req.decode.id,
+                status: responce.rows[0].currentStatus,
+                title,
+                category,
+                description,
+                urgencyLevel
+              }
             });
           });
       })
       .catch((err) => {
         res.status(500).json({
-          message: 'Signup Failed'
+          message: 'Signup Failed',
+          error: err.message
         });
       });
-
   }
 
   //   /**
-  // 	 *@description - Fetch all the requests of a logged in user
-  //  	 *
+  // *@description - Fetch all the requests of a logged in user
+  //  *
   //    *@param {object} request - HTTP request
   //    *
   //    * @param {object} response
@@ -86,8 +80,8 @@ class Request {
   //     });
   //   }
   //   /**
-  // 	 *@description - Get a the request of a logged in user
-  //  	 *
+  // *@description - Get a the request of a logged in user
+  //  *
   //    *@param {object} req - HTTP request
   //    *
   //    * @param {object} res
