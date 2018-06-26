@@ -7,30 +7,6 @@ import Validator from 'validatorjs';
 class Validate {
   /**
    *
-   * @param {request} req
-   *
-   * @param {res} res
-   *
-   * @param {function} next
-   *
-   * @returns {Object} - JSON object and status code
-   *
-   * @memberof Validate
-   */
-  static userId(req, res, next) {
-    const { userId } = req.params;
-
-    if (isNaN(userId)) {
-      return res.status(400).json({
-        message: 'Parameter must be a number!'
-      });
-    }
-    return next();
-  }
-  /**
-   *
-   * @static
-   *
    * @param {object} req
    *
    * @param {object} res
@@ -73,7 +49,7 @@ class Validate {
     } else {
       const errors = validation.errors.all();
       return res.status(400)
-        .json({ message: errors });
+        .send({ message: errors });
     }
   }
   /**
@@ -112,30 +88,8 @@ class Validate {
     } else {
       const errors = validation.errors.add();
       return res.status(400)
-        .json({ message: errors });
+        .send({ message: errors });
     }
-  }
-  /**
-   *
-   * @param {request} req
-   *
-   * @param {res} res
-   *
-   * @param {function} next
-   *
-   * @returns {Object} - JSON object and status code
-   *
-   * @memberof Validate
-   */
-  static requestId(req, res, next) {
-    const { requestId } = req.params;
-
-    if (isNaN(requestId)) {
-      return res.status(400).json({
-        message: 'Parameter must be a number!'
-      });
-    }
-    return next();
   }
   /**
    *
@@ -173,7 +127,7 @@ class Validate {
     } else {
       const errors = validation.errors.all();
       return res.status(400)
-        .json({ message: errors });
+        .send({ message: errors });
     }
   }
 }
