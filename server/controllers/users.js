@@ -46,7 +46,7 @@ class Users {
           if (result.username === username.trim()) {
             errors.username = 'Username already taken';
           }
-          return res.status(409).json({
+          return res.status(409).send({
             message: 'User Already Exists, Please Login'
           });
         }
@@ -55,21 +55,26 @@ class Users {
             const newUser = {
               username,
               email,
-              id: result.rows[0].id,
+              id: response.rows[0].id,
               firstName: response.rows[0].firstName,
               lastName: response.rows[0].lastName
             };
-            const token = Auth.createToken(create);
 
-            res.status(201).json({
-              message: 'Signup succesfull',
+            const token = Auth.createToken({
+              id: response.rows[0].id,
+              username,
+              role: response.rows[0].role
+            });
+
+            res.status(201).send({
+              message: 'Signup Successful',
               newUser,
               token
             });
           });
       })
       .catch((err) => {
-        res.status(500).json({
+        res.status(500).send({
           message: 'Signup Failed',
           error: err.message
         });
@@ -94,33 +99,33 @@ class Users {
     db.query(fetchUser)
       .then((result) => {
         if (!result.rows[0]) {
-          res.status(401).json({
+          res.status(401).send({
             message: 'Invalid Username or Email, please provide valid credentials'
           });
         } else if (bcrypt.compareSync(password, result.rows[0].password)) {
           const token = Auth.createToken(result.rows[0]);
           if (!password) {
-            res.status(400).json({
+            res.status(400).send({
               message: 'Wrong Password'
             });
           }
-          return res.status(200).json({
+          return res.status(200).send({
             message: 'Login Successful!',
             userDetails: {
               id: result.rows[0].id,
               username: result.rows[0].username,
               email: result.rows[0].email,
               role: result.rows[0].user_role,
-              token,
             },
+            token
           });
         }
-        return res.status(401).json({
+        return res.status(401).send({
           message: 'Invalid Credentials, Please try again'
         });
       })
       .catch((err) => {
-        res.status(500).json({
+        res.status(500).send({
           message: 'Server Error',
           error: err.message
         });
