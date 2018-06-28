@@ -1,9 +1,14 @@
 language: node_js
+env:
+   - DATABASE_URL_TEST=postgres://postgres:asdflkj@localhost:5432/maintenanceTrackerTestDb
+
+
 node_js:
    - "10.4.0"
 
 before-script:
     - npm install
+    - psql -c 'create database travis;' -U postgres
 
-script: npm test
+script: npm run test
 after_success: npm run coverage
