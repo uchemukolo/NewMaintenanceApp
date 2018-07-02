@@ -3,12 +3,22 @@ const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
 
 dotenv.config();
+let connectionString;
+const env = process.env.NODE_ENV;
 
+if (env === 'production') {
+  connectionString = process.env.DATABASE_URL;
+} else if (env === 'test') {
+  connectionString = process.env.DATABASE_URL_TEST;
+} else {
+  connectionString = process.env.DATABASE_URL_DEV;
+}
+console.log('>>>>>>>>', env);
+console.log('>>>>>>>', connectionString);
 
-const connectionString = process.env.DATABASE_URL || 'postgres://postgres:asdflkj@localhost:5432/maintenanceTrackerDb';
 
 const pool = new Pool({
-  connectionString: connectionString,
+  connectionString,
 });
 
 const password = 'asdf1234';
@@ -32,12 +42,12 @@ INSERT INTO users VALUES( default, 'muche', 'Uche', 'Mukolo', 'muche@email.com',
 
 const requests = `
 DROP TABLE IF EXISTS requests cascade;
-DROP TYPE category_type;
-DROP TYPE urgency_level_type;
-DROP TYPE status_type;
+DROP TYPE IF EXISTS category_type;
+DROP TYPE IF EXISTS urgency_level_type;
+DROP TYPE IF EXISTS status_type;
 CREATE TYPE category_type AS ENUM ('Repair', 'Maintenance');
 CREATE TYPE urgency_level_type AS ENUM ('High', 'Medium', 'Low');
-CREATE TYPE status_type AS ENUM ('Pending', 'Approved', 'Disapproved', 'In Progress', 'Resolved');
+CREATE TYPE status_type AS ENUM ('Pending', 'Approved', 'Disapproved', 'Resolved');
 CREATE TABLE requests(
   id SERIAL PRIMARY KEY,
   userId int,
@@ -50,22 +60,26 @@ CREATE TABLE requests(
   FOREIGN KEY (userId) REFERENCES users(id)
    )`;
 
-// const seedRequests = `
-// INSERT INTO requests VALUES( default, default, 'Laptop Issues', 'Repair', 'High', 'Description of the problem', 'Approved', default )`;
+pool.query(users).then((res) => {
+  if (res) {
+    console.log('User table created');
+  } else {
+    console.log('Error creating users table');
+  }
+  pool.query(seedUsers).then((res) => {
+    if (res) {
+      console.log('Seeding users successful');
+    } else {
+      console.log('Error seeding users');
+    }
 
-pool.query(users).then((res, err) => {
-  console.log(res, err);
+    pool.query(requests).then((res) => {
+      if (res) {
+        console.log('Request table created');
+      } else {
+        console.log('Error creating Request Table');
+      }
+      pool.end();
+    });
+  });
 });
-
-pool.query(seedUsers).then((res, err) => {
-  console.log(res, err);
-});
-
-pool.query(requests).then((res, err) => {
-  console.log(res, err);
-});
-
-// pool.query(seedRequests).then((res, err) => {
-//   console.log(res, err);
-//   error: err.message
-// });
