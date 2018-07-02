@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "set NODE_ENV=development&& nodemon --watch server --exec babel-node server/app.js ",
     "start": "set NODE_ENV=production&& --exec babel-node server/app.js",
-    "test": "set NODE_ENV=test&& npm run migrate-test && nyc mocha --compilers js:babel-core/register server/tests/*.* --timeout 5000 --exit",
+    "test": "export NODE_ENV=test&& npm run migrate-test && nyc mocha --compilers js:babel-core/register server/tests/*.* --timeout 5000 --exit",
     "coverage": "npm test && nyc report --reporter=text-lcov | coveralls",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
     "migrate": "babel-node server/models/database.js",
