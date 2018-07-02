@@ -1,21 +1,12 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../app';
+// import token from './ausers.test';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
-
-export let token;
-// 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJqb2huZG9lIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE1Mjk5NDU1MzYsImV4cCI6MTUzMDAzMTkzNn0.j03pkPhf-6MUetkhSim29O7IR3jmDBLgAiyynSeVpz0';
-export let requestId;
-// const user = {
-//   username: 'johndoe',
-//   firstName: 'John',
-//   lastName: 'Doe',
-//   email: 'jogndoe@email.com',
-//   password: 'abcd1234'
-// };
+let token;
 
 describe('Maintenance Tracker App ::: Request', () => {
   it('should login the user first', (done) => {
@@ -145,7 +136,7 @@ describe('Maintenance Tracker App ::: Request', () => {
         .end((err, res) => {
           const message = 'Request Created Successfully';
           expect(res.status).to.equal(201);
-          expect(res.body).to.haveOwnProperty('newRequest').to.not.be.null;
+          expect(res.body).to.haveOwnProperty('newRequest');
           expect(res.body).to.haveOwnProperty('message').to.eql(message);
           done();
         });
@@ -187,8 +178,6 @@ describe('Maintenance Tracker App ::: Request', () => {
         });
     });
   });
-
-
   describe('Get All Requests', () => {
     it('should allow user get all requests they created', (done) => {
       chai.request(app)
@@ -196,7 +185,7 @@ describe('Maintenance Tracker App ::: Request', () => {
         .set('token', token)
         .end((err, res) => {
           expect(res.status).to.equal(200);
-          expect(res.body).to.haveOwnProperty('requests').to.not.be.null;
+          expect(res.body).to.haveOwnProperty('requests');
           done();
         });
     });

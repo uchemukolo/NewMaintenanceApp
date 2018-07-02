@@ -7,7 +7,7 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 export let token;
-export let requestId;
+export let adminToken;
 
 describe('Maintenance Tracker App ::: User', () => {
   describe('Signup ', () => {
@@ -126,9 +126,10 @@ describe('Maintenance Tracker App ::: User', () => {
         const message = 'Signup Successful';
         expect(res.status).to.equal(201);
         expect(res.body).to.haveOwnProperty('message').to.eql(message);
-        expect(res.body).to.haveOwnProperty('token').to.not.be.null;
-        expect(res.body).to.haveOwnProperty('newUser').to.not.be.null;
+        expect(res.body).to.haveOwnProperty('token');
+        expect(res.body).to.haveOwnProperty('newUser');
         done();
+        console.log('<<<>>>>>>>>>>>', token);
       });
   });
   it('should not allow user signup with same email or username twice.', (done) => {
@@ -203,9 +204,29 @@ describe('Login', () => {
         token = res.body.token;
         expect(res.status).to.equal(200);
         expect(res.body).to.haveOwnProperty('message').to.eql(message);
-        expect(res.body).to.haveOwnProperty('token').to.not.be.null;
-        expect(res.body).to.haveOwnProperty('userDetails').to.not.be.null;
+        expect(res.body).to.haveOwnProperty('token');
+        expect(res.body).to.haveOwnProperty('userDetails');
         done();
+        console.log('>>>>>>>>>>>>>>>', res.body.token);
+      });
+  });
+  it('should let Admin login with no errors', (done) => {
+    const admin = {
+      username: 'muche',
+      password: 'asdf1234'
+    };
+    chai.request(app)
+      .post('/api/v1/auth/login')
+      .send(admin)
+      .end((err, res) => {
+        const message = 'Login Successful!';
+        adminToken = res.body.token;
+        expect(res.status).to.equal(200);
+        expect(res.body).to.haveOwnProperty('message').to.eql(message);
+        expect(res.body).to.haveOwnProperty('token');
+        expect(res.body).to.haveOwnProperty('userDetails');
+        done();
+        console.log('>>>>>>>>>>>>>>>', res.body.token);
       });
   });
 });
