@@ -6,7 +6,7 @@ node_js:
 services:
   - postgresql
 
-before-script:
+before_script:
     - npm install
     - psql -c 'create database travis_ci_test;' -U postgres
 
