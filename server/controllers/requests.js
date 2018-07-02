@@ -85,7 +85,6 @@ class Request {
             message: 'You are not Authorised to Modify this request!'
           });
         }
-
         db.query(update)
           .then((updated) => {
             if (title) {
@@ -114,7 +113,7 @@ class Request {
       });
   }
   /**
-   *@description - Get all requests
+   *@description - Get all requests by a logged in User
    *@param {object} req - request object
    *
    * @param {object} res - responce object
