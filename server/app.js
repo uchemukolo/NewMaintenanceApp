@@ -3,6 +3,7 @@ import express from 'express';
 import logger from 'morgan';
 import request from './routes/requestRoute';
 import user from './routes/userRoute';
+import admin from './routes/adminRoute';
 
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/v1/auth', user);
 app.use('/api/v1/users/requests', request);
+app.use('/api/v1/requests', admin);
 
 app.get('*', (req, res) => res.status(200).json({
   message: 'Welcome To Maintenance Tracker API!!!',
