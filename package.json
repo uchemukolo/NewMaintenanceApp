@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "set NODE_ENV=development&& nodemon --watch server --exec babel-node server/app.js ",
-    "start": "export NODE_ENV=production&& --exec babel-node server/app.js",
+    "start": "cross-env NODE_ENV=production babel-node server/app.js",
     "test": "export NODE_ENV=test&& npm run migrate-test && nyc mocha --compilers js:babel-core/register server/tests/*.* --timeout 5000 --exit",
     "coverage": "npm test && nyc report --reporter=text-lcov | coveralls",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
