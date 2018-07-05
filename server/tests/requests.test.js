@@ -150,7 +150,7 @@ describe('Maintenance Tracker App ::: Request', () => {
           title: 'Faulty Laptop',
           category: 'Repair',
           description: ' My laptop is not coming up. Yesterday everything was working fine but this morning I noticed the laptop was very hot and not coming up',
-          urgencyLevel: 'High'
+          urgencyLevel: 'High',
         })
         .set('token', token)
         .end((err, res) => {

@@ -37,6 +37,7 @@ describe('Maintenance Tracker App ::: Admin Requests', () => {
       .set('token', adminToken)
       .end((err, res) => {
         expect(res.status).to.equal(200);
+        expect(res.body).to.have.a.property('requests')
         expect(res.body).to.have.a.property('message');
         expect(res.body.message).to.equal('All requests successfully retrieved');
         done();
@@ -87,6 +88,93 @@ describe('Maintenance Tracker App ::: Admin Requests', () => {
           expect(res.status).to.equal(200);
           expect(res.body).to.have.a.property('message');
           expect(res.body.message).to.equal('Request has been approved');
+          done();
+        });
+    });
+  });
+
+  describe('PUT /api/v1/requests/:requestId/resolve', () => {
+    it('should  allow user create a request that is approved', (done) => {
+      chai.request(app)
+        .post('/api/v1/users/requests')
+        .send({
+          title: 'Faulty Air Condition',
+          category: 'Maintenance',
+          description: ' Some text to describe the problem',
+          urgencyLevel: 'High',
+          currentStatus: 'Approved'
+        })
+        .set('token', token)
+        .end((err, res) => {
+          const message = 'Request Created Successfully';
+          expect(res.status).to.equal(201);
+          expect(res.body).to.haveOwnProperty('newRequest');
+          expect(res.body).to.haveOwnProperty('message').to.eql(message);
+          done();
+        });
+    });
+    it('should not resolve a request when user not authenticated', (done) => {
+      const requestId = 34;
+      chai.request(app)
+        .put(`/api/v1/requests/${requestId}/resolve`)
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          expect(res.body).to.have.a.property('message');
+          expect(res.body.message).to.equal('Unauthorised User! Please provide a valid token');
+          done();
+        });
+    });
+    it('should not resolve a request if user is not an admin', (done) => {
+      const requestId = 12;
+      chai.request(app)
+        .put(`/api/v1/requests/${requestId}/resolve`)
+        .set('token', 'some random stuff as token')
+        .send({
+          title: 'Faulty AC',
+          category: 'Maintenance',
+          description: ' Some text explaining the dicription of the problem',
+          urgencyLevel: 'Medium'
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          expect(res.body).to.have.a.property('message');
+          expect(res.body.message).to.equal('Token could not be authenticated');
+          done();
+        });
+    });
+    it('should not resolve a pending request', (done) => {
+      const requestId = 54;
+      chai.request(app)
+        .put(`/api/v1/requests/${requestId}/resolve`)
+        .set('token', adminToken)
+        .end((err, res) => {
+          expect(res.status).to.equal(405);
+          expect(res.body).to.have.a.property('message');
+          expect(res.body.message).to.equal('This request has not been approved, Please check the current status of the request');
+          done();
+        });
+    });
+    it('should resolve a request if user is an admin', (done) => {
+      const requestId = 1;
+      chai.request(app)
+        .put(`/api/v1/requests/${requestId}/resolve`)
+        .set('token', adminToken)
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.have.a.property('message');
+          expect(res.body.message).to.equal('Request has been successfully resolved');
+          done();
+        });
+    });
+    it('should not resolve a rejected request', (done) => {
+      const requestId = 43;
+      chai.request(app)
+        .put(`/api/v1/requests/${requestId}/resolve`)
+        .set('token', adminToken)
+        .end((err, res) => {
+          expect(res.status).to.equal(405);
+          expect(res.body).to.have.a.property('message');
+          expect(res.body.message).to.equal('This request has not been approved, Please check the current status of the request');
           done();
         });
     });
@@ -142,61 +230,6 @@ describe('Maintenance Tracker App ::: Admin Requests', () => {
           expect(res.status).to.equal(200);
           expect(res.body).to.have.a.property('message');
           expect(res.body.message).to.equal('Request has been Disapproved');
-          done();
-        });
-    });
-  });
-  describe('PUT /api/v1/requests/:requestId/resolve', () => {
-    it('should not resolve a request when user not authenticated', (done) => {
-      const requestId = 34;
-      chai.request(app)
-        .put(`/api/v1/requests/${requestId}/resolve`)
-        .end((err, res) => {
-          expect(res.status).to.equal(401);
-          expect(res.body).to.have.a.property('message');
-          expect(res.body.message).to.equal('Unauthorised User! Please provide a valid token');
-          done();
-        });
-    });
-    it('should not resolve a request if user is not an admin', (done) => {
-      const requestId = 12;
-      chai.request(app)
-        .put(`/api/v1/requests/${requestId}/resolve`)
-        .set('token', 'some random stuff as token')
-        .send({
-          title: 'Faulty AC',
-          category: 'Maintenance',
-          description: ' Some text explaining the dicription of the problem',
-          urgencyLevel: 'Medium'
-        })
-        .end((err, res) => {
-          expect(res.status).to.equal(401);
-          expect(res.body).to.have.a.property('message');
-          expect(res.body.message).to.equal('Token could not be authenticated');
-          done();
-        });
-    });
-    it('should not resolve a pending request', (done) => {
-      const requestId = 54;
-      chai.request(app)
-        .put(`/api/v1/requests/${requestId}/resolve`)
-        .set('token', adminToken)
-        .end((err, res) => {
-          expect(res.status).to.equal(405);
-          expect(res.body).to.have.a.property('message');
-          expect(res.body.message).to.equal('This request has not been approved, Please check the current status of the request');
-          done();
-        });
-    });
-    it('should not resolve a rejected request', (done) => {
-      const requestId = 43;
-      chai.request(app)
-        .put(`/api/v1/requests/${requestId}/resolve`)
-        .set('token', adminToken)
-        .end((err, res) => {
-          expect(res.status).to.equal(405);
-          expect(res.body).to.have.a.property('message');
-          expect(res.body.message).to.equal('This request has not been approved, Please check the current status of the request');
           done();
         });
     });
