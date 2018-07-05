@@ -209,6 +209,18 @@ describe('Maintenance Tracker App ::: Request', () => {
           done();
         });
     });
+    it('should not allow user get a request with a wrong requestId format', (done) => {
+      chai.request(app)
+        .get('/api/v1/users/requests/ffrds4')
+        .set('token', token)
+        .end((err, res) => {
+          expect(res.status).to.equal(500);
+          expect(res.body).to.have.a.property('message');
+          expect(res.body).to.have.a.property('error');
+          expect(res.body.message).to.equal('Some error occured!');
+          done();
+        });
+    });
   });
 });
 

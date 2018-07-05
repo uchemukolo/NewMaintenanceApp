@@ -160,7 +160,6 @@ class Validate {
         if (result.rows.length === 0) {
           return res.status(405).send({
             message: 'Admin has already looked into this request, Please check the current status of the request',
-            status: 'fail',
           });
         }
         return next();
@@ -196,80 +195,80 @@ class Validate {
         return next();
       });
   }
-  /**
-   *
-   * @static
-   * @param {object} req
-   *
-   * @param {object} res
-   *
-   * @param {function} next
-   *
-   * @returns {object} - JSON object and status code
-   *
-   * @memberof Validate
-   */
-  static resolvedRequest(req, res, next) {
-    const { requestId } = req.params;
+  // /**
+  //  *
+  //  * @static
+  //  * @param {object} req
+  //  *
+  //  * @param {object} res
+  //  *
+  //  * @param {function} next
+  //  *
+  //  * @returns {object} - JSON object and status code
+  //  *
+  //  * @memberof Validate
+  //  */
+  // static resolvedRequest(req, res, next) {
+  //   const { requestId } = req.params;
 
-    const query = {
-      text: 'SELECT * FROM requests WHERE id = $1',
-      values: [requestId]
-    };
+  //   const query = {
+  //     text: 'SELECT * FROM requests WHERE id = $1',
+  //     values: [requestId]
+  //   };
 
-    db.query(query)
-      .then((request) => {
-        if (request.rows[0].status === 'Resolved') {
-          return res.status(400).send({
-            message: 'Request has already been resolved, it can not be approved',
-          });
-        }
-        return next();
-      })
-      .catch((err) => {
-        res.status(400).send({
-          message: 'Resolved request cannot be modified',
-          error: err.message
-        });
-      });
-  }
-  /**
-   *
-   * @static
-   * @param {object} req
-   *
-   * @param {object} res
-   *
-   * @param {function} next
-   *
-   * @returns {object} - JSON object and status code
-   *
-   * @memberof Validate
-   */
-  static resolveCheck(req, res, next) {
-    const { requestId } = req.params;
+  //   db.query(query)
+  //     .then((request) => {
+  //       if (request.rows[0].currentStatus === 'Resolved') {
+  //         return res.status(400).send({
+  //           message: 'Request has already been resolved, it can not be approved',
+  //         });
+  //       }
+  //       return next();
+  //     })
+  //     .catch((err) => {
+  //       res.status(400).send({
+  //         message: 'Resolved request cannot be modified',
+  //         error: err.message
+  //       });
+  //     });
+  // }
+  // /**
+  //  *
+  //  * @static
+  //  * @param {object} req
+  //  *
+  //  * @param {object} res
+  //  *
+  //  * @param {function} next
+  //  *
+  //  * @returns {object} - JSON object and status code
+  //  *
+  //  * @memberof Validate
+  //  */
+  // static resolveCheck(req, res, next) {
+  //   const { requestId } = req.params;
 
-    const query = {
-      text: 'SELECT * FROM requests WHERE requestid = $1',
-      values: [requestId]
-    };
+  //   const query = {
+  //     text: 'SELECT * FROM requests WHERE id = $1',
+  //     values: [requestId]
+  //   };
 
-    db.query(query)
-      .then((request) => {
-        if (request.rows[0].status === 'Disapproved' || request.rows[0].status === 'Pending') {
-          return res.status(400).send({
-            message: 'Only an approved request can be Resolved',
-          });
-        }
-        return next();
-      })
-      .catch((err) => {
-        res.status(400).send({
-          message: 'Could not retrieve request',
-          error: err.message
-        });
-      });
-  }
+  //   db.query(query)
+  //     .then((request) => {
+  //       if (request.rows[0].currentStatus === 'Disapproved' || request.rows[0].status === 'Pending') {
+  //         return res.status(400).send({
+  //           message: 'Only an approved request can be Resolved',
+  //         });
+  //       }
+  //       return next();
+  //     })
+  //     .catch((err) => {
+  //       res.status(400).send({
+  //         message: 'Could not retrieve request',
+  //         error: err.message
+  //       });
+  //     });
+  // }
 }
 
 export default Validate;

@@ -166,6 +166,18 @@ describe('Maintenance Tracker App ::: Admin Requests', () => {
           done();
         });
     });
+    it('should not resolve a request that is not approved', (done) => {
+      const requestId = 1;
+      chai.request(app)
+        .put(`/api/v1/requests/${requestId}/resolve`)
+        .set('token', adminToken)
+        .end((err, res) => {
+          expect(res.status).to.equal(405);
+          expect(res.body).to.have.a.property('message');
+          expect(res.body.message).to.equal('This request has not been approved, Please check the current status of the request');
+          done();
+        });
+    });
     it('should not resolve a rejected request', (done) => {
       const requestId = 43;
       chai.request(app)

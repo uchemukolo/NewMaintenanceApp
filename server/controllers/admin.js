@@ -119,21 +119,26 @@ class AdminRequest {
   */
   static resolveRequest(req, res) {
     const { requestId } = req.params;
+    const checkResolve = {
+      text: 'SELECT * FROM requests WHERE id = $1',
+      values: [requestId]
+    };
     const resolve = {
       text: 'UPDATE requests SET currentStatus = $1 WHERE id = $2 RETURNING *;',
       values: ['Resolved', requestId],
     };
-    db.query(resolve)
-      .then((resolved) => {
-        if (resolved) {
-          return res.status(200).send({
-            request: resolved.rows[0],
-            message: 'Request has been successfully resolved'
+    db.query(checkResolve)
+      .then((response) => {
+        if (response.rows[0].currentStatus === 'Resolved' || response.rows[0].currentStatus === 'Disapproved') {
+          return res.status(405).send({
+            message: 'This request has already been Resolved or disapproved please check request details',
           });
         }
-        return res.status(404).send({
-          message: 'This request has already been Resolved, check the request details for more info'
-        });
+        db.query(resolve)
+          .then(resolved => res.status(200).send({
+            request: resolved.rows[0],
+            message: 'Request has been successfully resolved'
+          }));
       })
       .catch((err) => {
         res.status(500).send({

@@ -105,7 +105,7 @@ class Users {
         } else if (bcrypt.compareSync(password, result.rows[0].password)) {
           const token = Auth.createToken(result.rows[0]);
           if (!password) {
-            res.status(400).send({
+            res.status(401).send({
               message: 'Wrong Password'
             });
           }

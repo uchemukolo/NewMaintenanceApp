@@ -159,11 +159,7 @@ class Request {
      */
   static getOne(req, res) {
     const { requestId } = req.params;
-    if (requestId === false) {
-      return res.status(400).send({
-        message: 'Invalid Id, please provide a valid Id'
-      });
-    }
+
     const fetchOne = {
       text: 'SELECT * FROM requests WHERE id = $1 AND userId = $2',
       values: [requestId, req.decoded.id],

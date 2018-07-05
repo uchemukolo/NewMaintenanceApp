@@ -190,7 +190,22 @@ describe('Login', () => {
         done();
       });
   });
-
+  it('should not let user login with wrong username', (done) => {
+    const user = {
+      username: 'johndo',
+      password: 'abcd1234'
+    };
+    chai.request(app)
+      .post('/api/v1/auth/login')
+      .send(user)
+      .end((err, res) => {
+        const message = 'Invalid Username or Email, please provide valid credentials';
+        token = res.body.token;
+        expect(res.status).to.equal(401);
+        expect(res.body.message).to.equal(message);
+        done();
+      });
+  });
   it('should let user login with no errors', (done) => {
     const user = {
       username: 'johndoe',
