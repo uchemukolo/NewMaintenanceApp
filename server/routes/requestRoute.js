@@ -10,16 +10,13 @@ router.get(
   auth.Verify,
   request.getAll
 );
+
 router.get(
   '/:requestId',
   auth.Verify,
   request.getOne
 );
-router.post(
-  '/', auth.Verify,
-  validate.createRequest,
-  request.createRequest
-);
+
 router.put(
   '/:requestId',
   auth.Verify,
