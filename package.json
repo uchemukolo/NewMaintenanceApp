@@ -10,7 +10,7 @@
     "coverage": "npm test && nyc report --reporter=text-lcov | coveralls",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
     "migrate": "babel-node server/models/database.js",
-    "migrate-prod": "cross-env NODE_ENV=production npm run migrate",
+    "migrate-prod": "export NODE_ENV=production&& npm run migrate",
     "migrate-dev": "cross-env NODE_ENV=development npm run migrate",
     "migrate-test": "cross-env NODE_ENV=test npm run migrate"
   },
