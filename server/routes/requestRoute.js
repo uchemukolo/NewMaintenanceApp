@@ -17,6 +17,12 @@ router.get(
   request.getOne
 );
 
+router.post(
+  '/', auth.Verify,
+  validate.createRequest,
+  request.createRequest
+);
+
 router.put(
   '/:requestId',
   auth.Verify,

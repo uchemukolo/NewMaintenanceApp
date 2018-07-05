@@ -9,35 +9,35 @@ import admin from './routes/adminRoute';
 
 
 const app = express();
-// swagger definition
-const swaggerDefinition = {
-  info: {
-    title: 'Maintenance Tracker API',
-    version: '1.0.0',
-    description: 'Maintenance Tracker App is an application that provides users with the ability to reach out to operations or repairs department regarding repair or maintenance requests and monitor the status of their request.',
-  },
-  host: 'localhost:9000',
-  basePath: '/',
-};
+// // swagger definition
+// const swaggerDefinition = {
+//   info: {
+//     title: 'Maintenance Tracker API',
+//     version: '1.0.0',
+//     description: 'Maintenance Tracker App is an application that provides users with the ability to reach out to operations or repairs department regarding repair or maintenance requests and monitor the status of their request.',
+//   },
+//   host: 'localhost:9000',
+//   basePath: '/',
+// };
 
-// options for the swagger docs
-const options = {
-  // import swaggerDefinitions
-  swaggerDefinition,
-  // path to the API docs
-  apis: ['./server/doc.js'],
-};
+// // options for the swagger docs
+// const options = {
+//   // import swaggerDefinitions
+//   swaggerDefinition,
+//   // path to the API docs
+//   apis: ['./server/doc.js'],
+// };
 
-// initialize swagger-jsdoc
-const swaggerSpec = swaggerJSDoc(options);
+// // initialize swagger-jsdoc
+// const swaggerSpec = swaggerJSDoc(options);
 
-// serve swagger
-app.get('/swagger.json', (req, res) => {
-  res.setHeader('Content-Type', 'application/json');
-  res.send(swaggerSpec);
-});
+// // serve swagger
+// app.get('/swagger.json', (req, res) => {
+//   res.setHeader('Content-Type', 'application/json');
+//   res.send(swaggerSpec);
+// });
 
-app.use(express.static('server/api'));
+// app.use(express.static('server/api'));
 
 const port = parseInt(process.env.PORT, 10) || 9000;
 
